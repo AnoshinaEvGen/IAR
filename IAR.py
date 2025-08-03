@@ -21,10 +21,11 @@ def exchange():
 
     if crypto_code and currency_code:
         try:
+            # Запрос к CoinGecko API
             response = requests.get(
                 f'https://api.coingecko.com/api/v3/simple/price?ids={crypto_code}&vs_currencies={currency_code}'
             )
-            response.raise_for_status()  # Проверка ошибок HTTP
+            response.raise_for_status()
             data = response.json()
 
             if currency_code.lower() in data.get(crypto_code, {}):
@@ -38,6 +39,24 @@ def exchange():
             mb.showerror("Ошибка", f"Ошибка API: {e}")
     else:
         mb.showwarning("Внимание", "Выберите криптовалюту и валюту")
+
+# Словари кодов и названий
+cryptos = {
+    "bitcoin": "Bitcoin (BTC)",
+    "ethereum": "Ethereum (ETH)",
+    "ripple": "Ripple (XRP)",
+    "cardano": "Cardano (ADA)",
+    "solana": "Solana (SOL)",
+    "dogecoin": "Dogecoin (DOGE)"
+}
+
+currencies = {
+    "USD": "Доллар США",
+    "EUR": "Евро",
+    "RUB": "Российский рубль",
+    "JPY": "Японская йена",
+    "CNY": "Китайский юань"
+}
 
 # Создание графического интерфейса
 window = Tk()
