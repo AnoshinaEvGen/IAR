@@ -1,7 +1,7 @@
 from tkinter import *
+from tkinter import ttk
 from tkinter import messagebox as mb
 import requests
-import json
 
 def update_b_label(event):
     # Получаем полное название базовой криптовалюты из словаря
@@ -21,7 +21,6 @@ def exchange():
 
     if crypto_code and currency_code:
         try:
-            # Запрос к CoinGecko API
             response = requests.get(
                 f'https://api.coingecko.com/api/v3/simple/price?ids={crypto_code}&vs_currencies={currency_code}'
             )
@@ -63,10 +62,22 @@ window = Tk()
 window.title("Курс криптовалют")
 window.geometry("360x300")
 
-label_1 = Label(text="Криптовалюта:").pack(padx=10, pady=5)
-label_2 = Label(text="Валюта:").pack(padx=10, pady=5)
+Label(text="Криптовалюта:").pack(padx=10, pady=5)
+b_combobox = ttk.Combobox(values=list(cryptos.keys()))
+b_combobox.pack(padx=10, pady=5)
+b_combobox.bind("<<ComboboxSelected>>", update_b_label)
+
+b_label = ttk.Label()
+b_label.pack(padx=10, pady=10)
+
+Label(text="Валюта:").pack(padx=10, pady=5)
+t_combobox = ttk.Combobox(values=list(currencies.keys()))
+t_combobox.pack(padx=10, pady=5)
+t_combobox.bind("<<ComboboxSelected>>", update_t_label)
+
+t_label = ttk.Label()
+t_label.pack(padx=10, pady=10)
 
 Button(text="Получить курс", command=exchange).pack(padx=10, pady=10)
 
 window.mainloop()
-
